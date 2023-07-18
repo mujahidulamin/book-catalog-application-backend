@@ -207,6 +207,8 @@ const run = async () => {
       });
     });
 
+
+    //single book get
     app.get("/books/:id", async (req, res) => {
       const bookId = req.params.id;
       const book = await booksCollection.findOne({ _id: new ObjectId(bookId) });
@@ -223,6 +225,8 @@ const run = async () => {
       }
     });
 
+
+    //add book post route
     app.post("/books/add-book", async (req, res) => {
       const authorizeToken = req.headers.authorization;
       if (!authorizeToken) {
@@ -252,6 +256,7 @@ const run = async () => {
       }
     });
 
+    
     app.put("/books/update-book/:id", async (req, res) => {
       const authorizeToken = req.headers.authorization;
       if (!authorizeToken) {
