@@ -271,9 +271,7 @@ const run = async () => {
           const bookId = req.params.id;
           const updatedBookData = req.body;
 
-          // Remove the _id field from the updatedBookData object
           delete updatedBookData._id;
-
           const result = await booksCollection.updateOne(
             { _id: new ObjectId(bookId) },
             { $set: updatedBookData }
@@ -325,6 +323,8 @@ const run = async () => {
       }
     });
 
+
+    //review post route
     app.post("/books/:id", async (req, res) => {
       const authorizeToken = req.headers.authorization;
       if (!authorizeToken) {
