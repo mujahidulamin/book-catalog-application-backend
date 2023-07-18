@@ -24,8 +24,87 @@ const run = async () => {
     const db = client.db("book-catalog");
     const booksCollection = db.collection("books");
     const usersCollection = db.collection("users");
+    const wishlistCollection = db.collection("wishlist");
+    const readingListCollection = db.collection("readingList");
 
-    // Authentication APIs Start
+
+
+    //wish list apis (post, get, delete)
+    app.post("/wishlist", async (req, res) => {
+      const bookData = req.body;
+      const result = await wishlistCollection.insertOne(bookData);
+      if (result.acknowledged == true) {
+        return res.status(200).send({
+          message: "Wishlist added successfully!",
+          book: bookData,
+        });
+      } else {
+        return res.status(400).send({
+          message: "Wishlist added failed!",
+        });
+      }
+    });
+
+    app.get("/wishlist", async (req, res) => {
+      const query = {};
+      const books = await wishlistCollection.find(query).toArray();
+      return res.status(200).send({
+        message: "Wishlist retrieved successfully!",
+        books: books,
+      });
+    });
+
+    app.delete("/wishlist/:id", async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: id };
+      const result = await wishlistCollection.deleteOne(filter);
+      return res.status(200).send({
+        message: "Wishlist Deleted successfully!",
+        books: result,
+      });
+    });
+
+
+    
+    app.post("/readingList", async (req, res) => {
+      const bookData = req.body;
+      const result = await readingListCollection.insertOne(bookData);
+      if (result.acknowledged == true) {
+        return res.status(200).send({
+          message: "ReadingList added successfully!",
+          book: bookData,
+        });
+      } else {
+        return res.status(400).send({
+          message: "ReadingList added failed!",
+        });
+      }
+    });
+
+
+    app.get("/readingList", async (req, res) => {
+      const query = {};
+      const books = await readingListCollection.find(query).toArray();
+      return res.status(200).send({
+        message: "ReadingList retrieved successfully!",
+        books: books,
+      });
+    });
+
+
+    app.delete("/readingList/:id", async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: id };
+      const result = await readingListCollection.deleteOne(filter);
+      return res.status(200).send({
+        message: "ReadingList Deleted successfully!",
+        books: result,
+      });
+    });
+
+
+
+    // User sign up and sign in Api's
     app.post("/signup", async (req, res) => {
       const userData = req.body;
 
@@ -87,7 +166,7 @@ const run = async () => {
         }
       }
     });
-    // Authentication APIs End
+
 
     // Books APIs Start
     app.get("/books/all-books", async (req, res) => {
