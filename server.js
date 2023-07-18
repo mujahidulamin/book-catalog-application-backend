@@ -27,8 +27,6 @@ const run = async () => {
     const wishlistCollection = db.collection("wishlist");
     const readingListCollection = db.collection("readingList");
 
-
-
     //wish list apis (post, get, delete)
     app.post("/wishlist", async (req, res) => {
       const bookData = req.body;
@@ -55,7 +53,7 @@ const run = async () => {
     });
 
     app.delete("/wishlist/:id", async (req, res) => {
-      const id = req.params.id
+      const id = req.params.id;
       const filter = { _id: id };
       const result = await wishlistCollection.deleteOne(filter);
       return res.status(200).send({
@@ -64,8 +62,6 @@ const run = async () => {
       });
     });
 
-
-    
     app.post("/readingList", async (req, res) => {
       const bookData = req.body;
       const result = await readingListCollection.insertOne(bookData);
@@ -81,7 +77,6 @@ const run = async () => {
       }
     });
 
-
     app.get("/readingList", async (req, res) => {
       const query = {};
       const books = await readingListCollection.find(query).toArray();
@@ -91,9 +86,8 @@ const run = async () => {
       });
     });
 
-
     app.delete("/readingList/:id", async (req, res) => {
-      const id = req.params.id
+      const id = req.params.id;
       const filter = { _id: id };
       const result = await readingListCollection.deleteOne(filter);
       return res.status(200).send({
@@ -101,8 +95,6 @@ const run = async () => {
         books: result,
       });
     });
-
-
 
     // User sign up and sign in Api's
     app.post("/signup", async (req, res) => {
@@ -167,7 +159,6 @@ const run = async () => {
       }
     });
 
-
     // books get search and filters api's
     app.get("/books/all-books", async (req, res) => {
       const { search, genre, publicationYear } = req.query;
@@ -202,9 +193,7 @@ const run = async () => {
       });
     });
 
-
-
-
+    // ten recent published book get
     app.get("/books/recent-published", async (req, res) => {
       const sort = { publishedDate: -1 };
       const result = await booksCollection
@@ -213,7 +202,7 @@ const run = async () => {
         .limit(10)
         .toArray();
       return res.status(200).send({
-        message: "Recent Published Books retrieved successfully!",
+        message: "Ten Published Books retrieved successfully!",
         books: result,
       });
     });
