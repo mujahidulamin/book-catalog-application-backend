@@ -207,7 +207,6 @@ const run = async () => {
       });
     });
 
-
     //single book get
     app.get("/books/:id", async (req, res) => {
       const bookId = req.params.id;
@@ -224,7 +223,6 @@ const run = async () => {
         });
       }
     });
-
 
     //add book post route add
     app.post("/books/add-book", async (req, res) => {
@@ -256,7 +254,7 @@ const run = async () => {
       }
     });
 
-
+    //update book route
     app.put("/books/update-book/:id", async (req, res) => {
       const authorizeToken = req.headers.authorization;
       if (!authorizeToken) {
