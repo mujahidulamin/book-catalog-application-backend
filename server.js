@@ -26,7 +26,7 @@ const run = async () => {
     const usersCollection = db.collection("users");
 
     // Authentication APIs Start
-    app.post("/auth/signup", async (req, res) => {
+    app.post("/signup", async (req, res) => {
       const userData = req.body;
 
       // find user is exist or not
@@ -35,7 +35,7 @@ const run = async () => {
       });
       if (isExistUser) {
         return res.status(400).send({
-          message: "This email already exist!",
+          message: "You have already created account with this email",
         });
       } else {
         // hashing password
@@ -46,7 +46,7 @@ const run = async () => {
         const result = await usersCollection.insertOne(userData);
         if (result.acknowledged == true) {
           return res.status(200).send({
-            message: "User sign up successfully!",
+            message: "Sign up successfully!",
           });
         } else {
           return res.status(400).send({
@@ -56,14 +56,14 @@ const run = async () => {
       }
     });
 
-    app.post("/auth/login", async (req, res) => {
+    app.post("/login", async (req, res) => {
       const userData = req.body;
       const isAvailableUser = await usersCollection.findOne({
         email: userData.email,
       });
       if (!isAvailableUser) {
         return res.status(400).send({
-          message: "This email does not exist!",
+          message: "Email does not exist!",
         });
       } else {
         const isPasswordMatched = await bcrypt.compare(
@@ -72,7 +72,7 @@ const run = async () => {
         );
         if (!isPasswordMatched) {
           return res.status(400).send({
-            message: "Incorrect Password!",
+            message: "Password is not correct!",
           });
         } else {
           const accessToken = await jwt.sign(
@@ -81,7 +81,7 @@ const run = async () => {
             { expiresIn: "30d" }
           );
           return res.status(200).send({
-            message: "Login successfully!",
+            message: "Logged in successfully!",
             token: accessToken,
           });
         }
