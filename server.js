@@ -226,7 +226,7 @@ const run = async () => {
     });
 
 
-    //add book post route
+    //add book post route add
     app.post("/books/add-book", async (req, res) => {
       const authorizeToken = req.headers.authorization;
       if (!authorizeToken) {
@@ -256,7 +256,7 @@ const run = async () => {
       }
     });
 
-    
+
     app.put("/books/update-book/:id", async (req, res) => {
       const authorizeToken = req.headers.authorization;
       if (!authorizeToken) {
